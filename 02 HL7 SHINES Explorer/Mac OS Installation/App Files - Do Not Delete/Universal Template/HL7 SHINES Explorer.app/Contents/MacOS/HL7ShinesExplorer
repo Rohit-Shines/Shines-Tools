@@ -1,0 +1,19 @@
+#!/bin/zsh
+set -u
+CONTENTS_DIR="$(cd "$(dirname "$0")/.." && pwd)"
+RESOURCES_DIR="$CONTENTS_DIR/Resources"
+PYTHON_FILE="$RESOURCES_DIR/python-path.txt"
+
+if [[ ! -f "$PYTHON_FILE" ]]; then
+  /usr/bin/osascript -e 'display alert "HL7 SHINES Explorer" message "The Python runtime path is missing. Please reinstall the application." as critical'
+  exit 1
+fi
+
+PYTHON_BIN="$(/bin/cat "$PYTHON_FILE")"
+if [[ ! -x "$PYTHON_BIN" ]]; then
+  /usr/bin/osascript -e 'display alert "HL7 SHINES Explorer" message "The Python runtime is unavailable. Please reinstall the application." as critical'
+  exit 1
+fi
+
+export PYTHONPATH="$RESOURCES_DIR/app/src"
+exec "$PYTHON_BIN" -m hl7_shines "$@"
