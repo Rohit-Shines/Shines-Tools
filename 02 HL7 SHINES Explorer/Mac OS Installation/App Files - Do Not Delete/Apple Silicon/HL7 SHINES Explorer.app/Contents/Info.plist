@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>en</string>
+	<key>CFBundleDisplayName</key>
+	<string>HL7 SHINES Explorer</string>
+	<key>CFBundleExecutable</key>
+	<string>HL7Shines</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.rohitshines.hl7shinesexplorer</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleName</key>
+	<string>HL7 SHINES Explorer</string>
+	<key>CFBundleIconFile</key>
+	<string>AppIcon</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleShortVersionString</key>
+	<string>1.2.0</string>
+	<key>CFBundleVersion</key>
+	<string>120</string>
+	<key>LSMinimumSystemVersion</key>
+	<string>13.0</string>
+	<key>NSHighResolutionCapable</key>
+	<true/>
+	<key>CFBundleDocumentTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeName</key>
+			<string>HL7 Message</string>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>LSHandlerRank</key>
+			<string>Alternate</string>
+			<key>CFBundleTypeExtensions</key>
+			<array>
+				<string>hl7</string>
+				<string>er7</string>
+				<string>txt</string>
+			</array>
+		</dict>
+	</array>
+	<key>NSLocalNetworkUsageDescription</key>
+	<string>HL7 Shines uses the local network only when you send or receive HL7 messages from the MLLP test bench.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>HL7 Shines uses the microphone only when you start dictation in a blank paste workspace.</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>HL7 Shines uses Apple speech recognition to turn your dictated HL7 text into an editable draft.</string>
+</dict>
+</plist>

@@ -1,0 +1,49 @@
+#!/bin/zsh
+set -uo pipefail
+
+CONTENTS_DIR="$(cd "$(dirname "$0")/.." && pwd)"
+RESOURCES_DIR="$CONTENTS_DIR/Resources"
+PYTHON_FILE="$RESOURCES_DIR/python-path.txt"
+
+find_python() {
+  local candidates=(
+    "/Library/Frameworks/Python.framework/Versions/3.13/bin/python3"
+    "/Library/Frameworks/Python.framework/Versions/3.12/bin/python3"
+    "/Library/Frameworks/Python.framework/Versions/3.11/bin/python3"
+    "/opt/homebrew/bin/python3"
+    "/usr/local/bin/python3"
+    "/usr/bin/python3"
+  )
+  local candidate
+  for candidate in "${candidates[@]}"; do
+    if [[ -x "$candidate" ]] && "$candidate" -c 'import sys, tkinter; raise SystemExit(0 if sys.version_info >= (3, 11) else 1)' >/dev/null 2>&1; then
+      /bin/echo "$candidate"
+      return 0
+    fi
+  done
+  return 1
+}
+
+PYTHON_BIN=""
+if [[ -s "$PYTHON_FILE" ]]; then
+  PYTHON_BIN="$(/bin/cat "$PYTHON_FILE")"
+fi
+
+# Self-repair when an older installer failed to create python-path.txt,
+# or when Python was moved or upgraded after installation.
+if [[ -z "$PYTHON_BIN" || ! -x "$PYTHON_BIN" ]]; then
+  PYTHON_BIN="$(find_python || true)"
+  if [[ -n "$PYTHON_BIN" ]]; then
+    /usr/bin/printf '%s\n' "$PYTHON_BIN" > "$PYTHON_FILE" 2>/dev/null || true
+  fi
+fi
+
+if [[ -z "$PYTHON_BIN" || ! -x "$PYTHON_BIN" ]]; then
+  /usr/bin/osascript <<'APPLESCRIPT'
+display alert "HL7 SHINES Explorer" message "A compatible Python runtime could not be found. Run the INSTALL command again while connected to the internet." as critical
+APPLESCRIPT
+  exit 1
+fi
+
+export PYTHONPATH="$RESOURCES_DIR/app/src"
+exec "$PYTHON_BIN" -m hl7_shines "$@"
